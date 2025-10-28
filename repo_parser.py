@@ -8,23 +8,19 @@ from rich.console import Console
 from rich.progress import track
 
 console = Console()
-
-
 class RepoParser:
     """Handles cloning and parsing GitHub repositories"""
     
     def __init__(self, github_token: str = None):
         self.github_token = github_token
         self.github_client = Github(github_token) if github_token else Github()
-        
-        # File extensions to process (code files)
+
         self.valid_extensions = {
             '.py', '.js', '.jsx', '.ts', '.tsx', '.java', '.cpp', '.c', '.h',
             '.cs', '.rb', '.go', '.rs', '.php', '.swift', '.kt', '.scala',
             '.md', '.txt', '.json', '.yaml', '.yml', '.toml', '.xml'
         }
-        
-        # Directories to skip
+
         self.skip_dirs = {
             'node_modules', '.git', '__pycache__', 'venv', 'env',
             '.venv', 'dist', 'build', '.next', 'target', 'vendor'
@@ -33,16 +29,12 @@ class RepoParser:
     def clone_repo(self, repo_url: str, local_path: str = "./repos") -> str:
         """Clone a GitHub repository locally"""
         try:
-            # Extract repo name from URL
             repo_name = repo_url.rstrip('/').split('/')[-1].replace('.git', '')
             clone_path = Path(local_path) / repo_name
-            
-            # Remove existing directory
             if clone_path.exists():
                 console.print(f"[yellow]Removing existing repo at {clone_path}[/yellow]")
                 shutil.rmtree(clone_path)
-            
-            # Clone repository
+                
             console.print(f"[blue]Cloning repository: {repo_url}[/blue]")
             Repo.clone_from(repo_url, clone_path)
             console.print(f"[green]✓ Repository cloned to {clone_path}[/green]")
@@ -54,32 +46,23 @@ class RepoParser:
             raise
     
     def parse_repo(self, repo_path: str) -> List[Dict[str, str]]:
-        """Parse repository and extract all code files"""
         documents = []
         repo_path = Path(repo_path)
-        
         console.print(f"[blue]Parsing repository: {repo_path.name}[/blue]")
-        
-        # Walk through all files
         all_files = list(repo_path.rglob('*'))
         
         for file_path in track(all_files, description="Processing files..."):
-            # Skip if not a file or in skip_dirs
             if not file_path.is_file():
                 continue
                 
             if any(skip_dir in file_path.parts for skip_dir in self.skip_dirs):
                 continue
             
-            # Check file extension
             if file_path.suffix not in self.valid_extensions:
                 continue
             
             try:
-                # Read file content
                 content = file_path.read_text(encoding='utf-8')
-                
-                # Create relative path from repo root
                 relative_path = file_path.relative_to(repo_path)
                 
                 documents.append({
@@ -100,7 +83,6 @@ class RepoParser:
     def get_repo_info(self, repo_url: str) -> Dict:
         """Fetch repository metadata from GitHub API"""
         try:
-            # Extract owner/repo from URL
             parts = repo_url.rstrip('/').replace('.git', '').split('/')
             owner, repo_name = parts[-2], parts[-1]
             

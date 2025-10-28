@@ -25,7 +25,6 @@ def display_banner():
 
 
 def main():
-    # Load environment variables
     load_dotenv()
     
     groq_api_key = os.getenv("GROQ_API_KEY")
@@ -37,13 +36,9 @@ def main():
         return
     
     display_banner()
-    
-    # Initialize components
     repo_parser = RepoParser(github_token=github_token)
     vector_store_manager = VectorStoreManager()
     qa_assistant = CodebaseQA(vector_store_manager, groq_api_key)
-    
-    # Main menu
     while True:
         console.print("\n[bold cyan]Options:[/bold cyan]")
         console.print("1. 📦 Index a new GitHub repository")
@@ -68,30 +63,23 @@ def main():
 
 
 def index_new_repository(repo_parser: RepoParser, vector_store_manager: VectorStoreManager):
-    """Index a new GitHub repository"""
     console.print("\n[bold]Index New Repository[/bold]")
     
     repo_url = Prompt.ask("Enter GitHub repository URL")
     
     try:
-        # Step 1: Clone repository
         repo_path = repo_parser.clone_repo(repo_url)
         
-        # Step 2: Parse repository
         documents = repo_parser.parse_repo(repo_path)
         
         if not documents:
             console.print("[red]No valid documents found in repository[/red]")
             return
-        
-        # Step 3: Get repository metadata
         repo_info = repo_parser.get_repo_info(repo_url)
         
-        # Step 4: Create vector store
         repo_name = repo_url.rstrip('/').split('/')[-1].replace('.git', '')
         vector_store_manager.create_vector_store(documents, repo_name, repo_info)
         
-        # Step 5: Save vector store
         vector_store_manager.save_vector_store(repo_name)
         
         console.print(f"\n[green]✅ Repository '{repo_name}' successfully indexed![/green]")
@@ -101,8 +89,6 @@ def index_new_repository(repo_parser: RepoParser, vector_store_manager: VectorSt
 
 
 def chat_with_repository(vector_store_manager: VectorStoreManager, qa_assistant: CodebaseQA):
-    """Chat with an indexed repository"""
-    # List available repositories
     available_repos = vector_store_manager.list_available_stores()
     
     if not available_repos:
@@ -117,14 +103,12 @@ def chat_with_repository(vector_store_manager: VectorStoreManager, qa_assistant:
     repo_name = available_repos[int(choice) - 1]
     
     try:
-        # Load vector store
         vector_store_manager.load_vector_store(repo_name)
         qa_assistant.setup_chain()
         
         console.print(f"\n[green]✅ Loaded repository: {repo_name}[/green]")
         console.print("[dim]Type 'quit' to exit, 'clear' to clear conversation history[/dim]\n")
-        
-        # Chat loop
+
         while True:
             question = Prompt.ask("\n[bold cyan]Your question[/bold cyan]")
             
@@ -138,11 +122,8 @@ def chat_with_repository(vector_store_manager: VectorStoreManager, qa_assistant:
             if not question.strip():
                 continue
             
-            # Get answer
             console.print("\n[dim]Thinking...[/dim]")
             result = qa_assistant.ask(question)
-            
-            # Display answer
             qa_assistant.display_answer(result)
     
     except Exception as e:
