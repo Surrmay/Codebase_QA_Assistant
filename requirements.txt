@@ -1,0 +1,20 @@
+# Core Dependencies
+langchain
+langchain-community
+langchain-groq
+
+# Vector Store and Embeddings
+faiss-cpu
+sentence-transformers
+
+# GitHub Integration
+PyGithub
+gitpython
+
+# Document Processing
+tiktoken
+python-dotenv
+
+# Utilities
+rich
+requests
