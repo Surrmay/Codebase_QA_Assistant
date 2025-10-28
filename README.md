@@ -1,3 +1,151 @@
 # Codebase_QA_Assistant
 
-A brief description of what this project does and who it's for.
+[![Python](https://img.shields.io/badge/Python-3.x-blue)](https://www.python.org/)
+
+## 🌟 Description
+
+Codebase_QA_Assistant is an interactive chatbot designed to help you understand large GitHub repositories without needing to download them. It leverages Langchain, Groq, and FAISS to provide a seamless question-answering experience about the codebase.
+
+## 📍 Table of Contents
+
+- [🌟 Description](#-description)
+- [📍 Table of Contents](#-table-of-contents)
+- [✨ Features](#-features)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [⚙️ Installation](#️-installation)
+- [🚀 Usage](#-usage)
+- [📂 Project Structure](#-project-structure)
+- [🤝 Contributing](#-contributing)
+- [📜 License](#-license)
+- [🔗 Important Links](#-important-links)
+- [📝 Footer](#-footer)
+
+## ✨ Features
+
+- **Interactive Chatbot**: Engage in conversations to understand the codebase.
+- **Repository Indexing**: Index new GitHub repositories directly via URL.
+- **Codebase Analysis**: Analyze and provide answers based on the code context.
+- **Memory Management**: Retain conversation history for context-aware answers.
+- **Source Code Citation**: Always cite the specific file paths when referencing code.
+- **Multiple Repositories**: Ability to chat with multiple indexed repositories.
+
+## 🛠️ Tech Stack
+
+- **Python**: Primary programming language.
+- **Langchain**: Framework for building language model applications.
+- **Groq**: For fast AI inference.
+- **FAISS**: Library for efficient similarity search and clustering of dense vectors.
+- **Sentence Transformers**: For generating embeddings.
+- **Rich**: For beautiful console output.
+- **PyGithub**: To interact with the Github API.
+- **python-dotenv**: For managing environment variables.
+
+## ⚙️ Installation
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/Surrmay/Codebase_QA_Assistant.git
+    cd Codebase_QA_Assistant
+    ```
+2.  **Set up a virtual environment (recommended):**
+    ```bash
+    python3 -m venv venv
+    source venv/bin/activate  # On Linux and macOS
+    # venv\Scripts\activate  # On Windows
+    ```
+3.  **Install the dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+4.  **Set up environment variables:**
+    - Create a `.env` file in the project root.
+    - Add your Groq API key and GitHub token to the `.env` file:
+        ```
+        GROQ_API_KEY="YOUR_GROQ_API_KEY"
+        GITHUB_TOKEN="YOUR_GITHUB_TOKEN"
+        ```
+    - Get your free Groq API key from: [https://console.groq.com](https://console.groq.com)
+
+## 🚀 Usage
+
+1.  **Run the `main.py` script:**
+    ```bash
+    python main.py
+    ```
+2.  **Follow the on-screen instructions:**
+    - Choose an option from the main menu:
+        - `1`: Index a new GitHub repository.
+        - `2`: Chat with an existing repository.
+        - `3`: List indexed repositories.
+        - `4`: Exit.
+
+### Indexing a New Repository:
+
+- Select option `1`.
+- Enter the GitHub repository URL when prompted.
+- The assistant will clone the repository, parse the code, and create a vector store.
+
+### Chatting with a Repository:
+
+- Select option `2`.
+- Choose the repository number from the list of available repositories.
+- Start asking questions about the codebase. Type `quit` to exit the chat, or `clear` to clear the conversation history.
+
+### Example Usage:
+
+```
+Options:
+1. 📦 Index a new GitHub repository
+2. 💬 Chat with an existing repository
+3. 📋 List indexed repositories
+4. 🚪 Exit
+
+Select an option: 2
+
+Available Repositories:
+1. Codebase_QA_Assistant
+Select repository number: 1
+
+✅ Loaded repository: Codebase_QA_Assistant
+Type 'quit' to exit, 'clear' to clear conversation history
+
+Your question: What is the purpose of the RepoParser class?
+```
+
+## 📂 Project Structure
+
+```
+Codebase_QA_Assistant/
+├── main.py           # Main entry point for the application
+├── qa_assistant.py   # Manages the question answering and memory
+├── repo_parser.py    # Handles cloning and parsing GitHub repositories
+├── vector_store.py   # Manages the vector store for efficient retrieval
+├── requirements.txt  # Lists the project dependencies
+└── README.md         # Project documentation (this file)
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1.  Fork the repository.
+2.  Create a new branch for your feature or bug fix.
+3.  Make your changes and commit them with clear, concise messages.
+4.  Submit a pull request.
+
+## 📜 License
+
+This project has no license.
+
+## 🔗 Important Links
+
+- [Project Repository](https://github.com/Surrmay/Codebase_QA_Assistant)
+
+## 📝 Footer
+
+[Codebase_QA_Assistant](https://github.com/Surrmay/Codebase_QA_Assistant) - Fork me, like me, give me stars, raise issues.
+Author: [Surrmay](https://github.com/Surrmay) - Contact: [Surrmay](https://github.com/Surrmay)
+
+
+---
+**<p align="center">Generated by [ReadmeCodeGen](https://www.readmecodegen.com/)</p>**
